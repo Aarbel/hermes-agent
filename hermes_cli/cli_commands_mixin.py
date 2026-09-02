@@ -2174,6 +2174,24 @@ class CLICommandsMixin:
         except Exception as exc:
             print(f"(._.) curator: {exc}")
 
+    def _handle_initiative_command(self, cmd: str):
+        """Handle /initiative — delegate to the shared initiatives CLI."""
+        from hermes_cli.initiatives import run_slash
+
+        rest = cmd.strip()
+        if rest.startswith("/"):
+            rest = rest.lstrip("/")
+        for prefix in ("initiatives", "initiative"):
+            if rest.startswith(prefix):
+                rest = rest[len(prefix):].lstrip()
+                break
+        try:
+            output = run_slash(rest)
+        except Exception as exc:  # pragma: no cover - defensive
+            output = f"(._.) initiative error: {exc}"
+        if output:
+            print(output)
+
     def _handle_kanban_command(self, cmd: str):
         """Handle the /kanban command — delegate to the shared kanban CLI.
 

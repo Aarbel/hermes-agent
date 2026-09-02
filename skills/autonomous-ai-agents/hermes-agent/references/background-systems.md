@@ -99,3 +99,19 @@ sessions still have zero `kanban_*` schema footprint unless configured.
   within a board for workspace-path + memory-key isolation.
 
 User docs: https://hermes-agent.nousresearch.com/docs/user-guide/features/kanban
+
+### Initiatives (standing objectives)
+
+Durable multi-session north stars. Headlines may appear in the system
+prompt (capped); bodies stay on disk; webhook/cron events are
+string-matched by `hermes initiative consider` *before* any LLM call.
+Unmatched events print `[SILENT]` (zero tokens). No new core tool —
+CLI + `/initiative`, same shape as kanban/cron.
+
+- **CLI:** `hermes initiative list|add|show|pause|resume|done|archive|watch|note|consider|install-script`
+- **Compose, don't duplicate:** a wake should spawn `/goal`, a kanban
+  card, or a cron job when those are the right brick.
+- **Cache-safe:** index baked at session start; wakes go to a new
+  session, never into the user's live chat.
+
+User docs: https://hermes-agent.nousresearch.com/docs/user-guide/features/initiatives

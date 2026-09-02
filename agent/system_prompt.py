@@ -925,6 +925,20 @@ def build_system_prompt_parts(agent: Any, system_message: Optional[str] = None) 
     if skills_prompt:
         volatile_parts.append(skills_prompt)
 
+    # Standing initiatives — headlines only, empty when none are active
+    # (zero tokens). Same volatile band as skills: the index is baked at
+    # session start and never mutated mid-conversation, so the cached
+    # prefix stays valid. Full bodies stay on disk.
+    try:
+        from hermes_cli.initiatives import build_prompt_index as _build_initiative_index
+
+        _init_home = _agent_home(agent)
+        _init_index = _build_initiative_index(home=_init_home)
+        if _init_index:
+            volatile_parts.append(_init_index)
+    except Exception:
+        pass
+
     if agent._memory_store:
         if agent._memory_enabled:
             mem_block = agent._memory_store.format_for_system_prompt("memory")

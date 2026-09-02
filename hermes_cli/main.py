@@ -12673,6 +12673,7 @@ _BUILTIN_SUBCOMMANDS = frozenset(
         "acp", "approvals", "auth", "backup", "bundles", "checkpoints", "claw", "completion",
         "computer-use",
         "config", "console", "cron", "curator", "dashboard", "serve", "debug", "doctor",
+        "initiative", "initiatives",
         "dump", "egress", "fallback", "gateway", "hooks", "import", "import-agent", "insights",
         "gui", "desktop", "kanban", "login", "logout", "logs", "lsp", "mcp", "memory", "migrate", "moa",
         "journey", "memory-graph", "learning",
@@ -14152,6 +14153,27 @@ def main():
         _register_curator_cli(curator_parser)
     except Exception as _exc:
         logging.getLogger(__name__).debug("curator CLI wiring failed: %s", _exc)
+
+    # =========================================================================
+    # initiative command — standing multi-session objectives
+    # =========================================================================
+    initiative_parser = subparsers.add_parser(
+        "initiative",
+        aliases=["initiatives"],
+        help="Standing initiatives — durable objectives that wake on events, not every turn",
+        description=(
+            "Initiatives are a thin harness brick above /goal, kanban, and "
+            "cron: a north-star objective that survives sessions. Only a few "
+            "one-line headlines enter the system prompt; the body stays on "
+            "disk; webhook/cron events are string-matched before any LLM call."
+        ),
+    )
+    try:
+        from hermes_cli.initiatives import register_cli as _register_initiative_cli
+
+        _register_initiative_cli(initiative_parser)
+    except Exception as _exc:
+        logging.getLogger(__name__).debug("initiative CLI wiring failed: %s", _exc)
 
     # =========================================================================
     # pets command — petdex animated mascots (CLI / TUI / desktop display)
