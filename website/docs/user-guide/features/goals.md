@@ -39,6 +39,22 @@ Tasks where the agent does one turn and stops don't need `/goal`. Tasks where *y
 If you want work on the board, put it there yourself (`hermes kanban create …`) — `/goal` won't do it for you. The reverse is also true: pausing, resuming, or clearing a goal in this chat never creates, claims, or moves a kanban card.
 :::
 
+## Goals vs Initiatives
+
+`/goal` and [initiatives](./initiatives.md) both sound like "a thing Hermes should keep working on." They are not the same brick:
+
+| | `/goal` | Initiative |
+|---|---|---|
+| Lifetime | This conversation | The profile (survives `/new`, `/resume` of other chats, gateway restarts) |
+| Where it lives | `SessionDB.state_meta` key `goal:<session_id>` — **not a markdown file** | `~/.hermes/initiatives/<slug>.md` |
+| What it does | Ralph loop: after each turn a judge may append a continuation user-message in *this* chat | North star + optional event matcher. A match starts a **new** session |
+| Default budget | 20 continuation turns | None. A wake is one session; that session may then set a `/goal` |
+| Tokens while idle | Zero extra (state is off-prompt) | At most a few capped headlines in the system prompt; empty store → omitted |
+
+Use `/goal` when you are already in a chat and want Hermes to keep going until the definition of done is met. Use an initiative when the objective should *outlive* this chat and notice events (a PR, a push, a webhook) without sitting in `SOUL.md`. An initiative wake is allowed to call `/goal` — that is the intended composition, not duplication.
+
+See [Initiatives: `/goal` vs an initiative](./initiatives.md#goal-vs-initiative) for examples of both stored shapes.
+
 ## Quick start
 
 ```

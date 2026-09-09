@@ -189,7 +189,7 @@ Script outcomes:
 - Non-JSON text stdout is added to the payload as `script_output`.
 - Empty stdout, exact `[SILENT]`, `{"__hermes_ignore__": true}`, timeout, missing script, or nonzero exit code returns HTTP 200 with `{"status":"ignored","reason":"script"}`.
 
-To wake [standing initiatives](../features/initiatives.md) only when an event matches, run `hermes initiative install-script` and point the route at `initiative-consider.py` with `--prompt "{wake_prompt}"`. Unmatched events stay `[SILENT]` — no model tokens.
+To wake [standing initiatives](../features/initiatives.md) only when an event matches, run `hermes initiative install-script` and point the route at `initiative-consider.py` with `--prompt "{wake_prompt}"`. Unmatched events stay `[SILENT]` — no model tokens. Cron is optional; the matcher is the trigger. See [how an initiative wakes](../features/initiatives.md#triggers) and [token tracking](../features/initiatives.md#token-tracking).
 
 ### Prompt Templates
 

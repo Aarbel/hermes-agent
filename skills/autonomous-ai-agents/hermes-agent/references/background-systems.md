@@ -102,11 +102,15 @@ User docs: https://hermes-agent.nousresearch.com/docs/user-guide/features/kanban
 
 ### Initiatives (standing objectives)
 
-Durable multi-session north stars. Headlines may appear in the system
-prompt (capped); bodies stay on disk; webhook/cron events are
-string-matched by `hermes initiative consider` *before* any LLM call.
-Unmatched events print `[SILENT]` (zero tokens). No new core tool —
-CLI + `/initiative`, same shape as kanban/cron.
+Durable multi-session north stars (not `/goal`: that is a same-session
+Ralph loop in `state_meta`, not a markdown file). Headlines may appear
+in the system prompt (capped); bodies stay on disk; webhook / stdin /
+optional cron events are string-matched by `hermes initiative consider`
+*before* any LLM call. Unmatched events print `[SILENT]` (zero tokens).
+No new core tool — CLI + `/initiative`, same shape as kanban/cron.
+Wakes title `initiative:<slug>` so `/usage` and `hermes sessions list
+--title` can cost them; `delegate_task` children are billed on their
+own sessions (`/agents` subtree tokens).
 
 - **CLI:** `hermes initiative list|add|show|pause|resume|done|archive|watch|note|consider|install-script`
 - **Compose, don't duplicate:** a wake should spawn `/goal`, a kanban

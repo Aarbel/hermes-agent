@@ -437,13 +437,19 @@ def build_wake_prompt(
     """Prompt for a *new* session — not injected into the user's live chat."""
     blocks: list[str] = []
     names = ", ".join(i.name for i in inits)
+    title = f"initiative:{inits[0].name}" if inits else "initiative"
     blocks.append(
         f"[Initiative wake: {names}]\n"
         "An external event matched one or more standing initiatives. "
+        f"Name this session `{title}` with `/title {title}` before doing work "
+        "(usage is billed per session; filter later with "
+        f"`hermes sessions list --title {title}`). "
         "Take the next concrete step, or hand the work to an existing brick "
         "(`/goal` for a same-session loop, `hermes kanban create` for a card, "
-        "`hermes cron` for a schedule). If the event is not actually relevant, "
-        "say so in one sentence and stop. Do not invent work."
+        "`hermes cron` for a schedule). If you spawn `delegate_task`, child "
+        "token use is on those child sessions — `/agents` shows the live "
+        "subtree. If the event is not actually relevant, say so in one "
+        "sentence and stop. Do not invent work."
     )
     for init in inits:
         body = (init.body or "").strip()
@@ -487,10 +493,12 @@ def consider_event(
     if not matched:
         return None
     wake = build_wake_prompt(matched, event, home=home)
+    title = f"initiative:{matched[0].name}"
     return {
         "initiative": matched[0].name,
         "initiatives": [i.name for i in matched],
         "headline": matched[0].headline,
+        "session_title": title,
         "wake_prompt": wake,
         "script_output": wake,
     }
@@ -665,6 +673,9 @@ def _cmd_install_script(args: argparse.Namespace) -> int:
     print('    --prompt "{wake_prompt}"')
     print()
     print("Unmatched events stay [SILENT] — no model tokens.")
+    print("On a match, consider JSON includes session_title=initiative:<slug>;")
+    print("the wake prompt asks the agent to /title the new session that way")
+    print("so hermes sessions list --title can cost it.")
     return 0
 
 

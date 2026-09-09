@@ -24,7 +24,7 @@ Hermes Agent includes a rich set of capabilities that extend far beyond basic ch
 ## Automation
 
 - **[Scheduled Tasks (Cron)](cron.md)** — Schedule tasks to run automatically with natural language or cron expressions. Jobs can attach skills, deliver results to any platform, and support pause/resume/edit operations.
-- **[Initiatives](initiatives.md)** — Durable multi-session objectives. Headlines in the prompt, bodies on disk, webhook/cron events wake them without an LLM pre-check.
+- **[Initiatives](initiatives.md)** — Durable multi-session north stars (not `/goal`). Headlines in the prompt, bodies on disk; webhooks/`consider` wake them without an LLM pre-check. Cron is optional.
 - **[Subagent Delegation](delegation.md)** — The `delegate_task` tool spawns child agent instances with isolated context, restricted toolsets, and their own terminal sessions. Run 3 concurrent subagents by default (configurable) for parallel workstreams.
 - **[Code Execution](code-execution.md)** — The `execute_code` tool lets the agent write Python scripts that call Hermes tools programmatically, collapsing multi-step workflows into a single LLM turn via sandboxed RPC execution.
 - **[Event Hooks](hooks.md)** — Run custom code at key lifecycle points. Gateway hooks handle logging, alerts, and webhooks; plugin hooks handle tool interception, metrics, and guardrails.

@@ -149,7 +149,9 @@ def test_consider_matches_dotted_watcher_without_llm(init_home):
     payload = ini.consider_event(event, home=init_home)
     assert payload is not None
     assert payload["initiative"] == "prs"
+    assert payload["session_title"] == "initiative:prs"
     assert "Initiative wake" in payload["wake_prompt"]
+    assert "/title initiative:prs" in payload["wake_prompt"]
     assert "Leave a review comment" in payload["wake_prompt"]
 
 
@@ -180,6 +182,7 @@ def test_consider_main_json_payload(init_home, tmp_path, capsys):
     assert out != "[SILENT]"
     payload = json.loads(out)
     assert payload["initiative"] == "prs"
+    assert payload["session_title"] == "initiative:prs"
     assert "wake_prompt" in payload
 
 
