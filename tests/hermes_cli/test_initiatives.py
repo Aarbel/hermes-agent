@@ -196,7 +196,7 @@ def test_notes_are_sidecar_not_in_index(init_home):
     assert notes[-1]["text"] == "Cut the RC tag yesterday."
     index = ini.build_prompt_index(home=init_home)
     assert "RC tag" not in index
-    md = (init_home / "initiatives" / "ship-v2.md").read_text(encoding="utf-8")
+    md = (init_home / "initiatives" / "ship-v2.md").read_text(encoding="utf-8-sig")
     assert "RC tag" not in md
 
 
@@ -249,7 +249,7 @@ def test_install_script_writes_under_hermes_home(init_home):
     assert rc == 0
     path = init_home / "scripts" / "initiative-consider.py"
     assert path.is_file()
-    content = path.read_text(encoding="utf-8")
+    content = path.read_text(encoding="utf-8-sig")
     assert "consider_main" in content
     assert str(Path.home() / ".hermes" / "scripts") not in content
 

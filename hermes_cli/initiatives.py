@@ -177,7 +177,7 @@ def _coerce_watch(value: Any) -> list[str]:
 
 
 def _from_file(path: Path) -> Initiative:
-    text = path.read_text(encoding="utf-8")
+    text = path.read_text(encoding="utf-8-sig")
     fm, body = _parse_frontmatter(text)
     name = str(fm.get("name") or path.stem).strip().lower()
     status = str(fm.get("status") or "active").strip().lower()
@@ -262,7 +262,7 @@ def append_note(name: str, text: str, *, home: Optional[Path] = None) -> Path:
     init = get_initiative(name, home=home)
     folder = initiatives_dir(home)
     path = folder / f"{init.name}.notes.jsonl"
-    existing = path.read_text(encoding="utf-8") if path.is_file() else ""
+    existing = path.read_text(encoding="utf-8-sig") if path.is_file() else ""
     line = json.dumps({"ts": _now(), "text": text.strip()}, ensure_ascii=False)
     atomic_write_text(path, existing + line + "\n")
     return path
@@ -274,7 +274,7 @@ def read_notes(name: str, *, last: int = 10, home: Optional[Path] = None) -> lis
     if not path.is_file():
         return []
     rows: list[dict[str, Any]] = []
-    for line in path.read_text(encoding="utf-8").splitlines():
+    for line in path.read_text(encoding="utf-8-sig").splitlines():
         line = line.strip()
         if not line:
             continue
@@ -521,7 +521,7 @@ def consider_main(argv: Optional[list[str]] = None) -> int:
     if args.event_json == "-":
         raw = sys.stdin.read()
     else:
-        raw = Path(args.event_json).read_text(encoding="utf-8")
+        raw = Path(args.event_json).read_text(encoding="utf-8-sig")
     raw = (raw or "").strip()
     if not raw:
         print(_SILENT)
@@ -579,7 +579,7 @@ def _cmd_add(args: argparse.Namespace) -> int:
     watch = _coerce_watch(args.watch)
     body = (args.body or "").strip()
     if args.file:
-        body = Path(args.file).read_text(encoding="utf-8")
+        body = Path(args.file).read_text(encoding="utf-8-sig")
     init = Initiative(name=name, headline=headline, body=body, watch=watch)
     path = save_initiative(init)
     shown = display_hermes_home()
