@@ -68,6 +68,7 @@ it. New commands land often; `/help` in-session is always authoritative.
 /blueprint (/bp) [name]  Set up an automation from a blueprint
 /curator [sub]           Skill maintenance (status, run, pin, archive, …)
 /kanban [sub]            Multi-profile collaboration board
+/initiative [sub]        Standing multi-session objectives (not /goal)
 /moa <prompt>            One prompt through the Mixture-of-Agents preset
 /reload                  Reload .env into the running session (CLI)
 /reload-mcp              Reload MCP servers

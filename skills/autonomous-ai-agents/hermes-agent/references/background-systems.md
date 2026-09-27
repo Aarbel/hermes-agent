@@ -99,3 +99,16 @@ sessions still have zero `kanban_*` schema footprint unless configured.
   within a board for workspace-path + memory-key isolation.
 
 User docs: https://hermes-agent.nousresearch.com/docs/user-guide/features/kanban
+
+## Initiatives
+
+Standing multi-session north stars — `hermes_cli/initiatives.py`. Not `/goal`
+(same-session Ralph loop), not a kanban card, not a cron job. Headlines
+(capped) may appear in the system prompt; bodies stay on disk; webhook
+events hit `hermes initiative consider` (string match, `[SILENT]` on miss)
+before any LLM call.
+
+Drive it via `hermes initiative <verb>` or `/initiative`. Wakes are new
+sessions titled `initiative:<slug>`. Cron is optional.
+
+User docs: https://hermes-agent.nousresearch.com/docs/user-guide/features/initiatives

@@ -344,6 +344,24 @@ class GatewaySlashCommandsMixin(
         runnable_str = ", ".join(f"/{c}" for c in runnable) if runnable else "(none)"
         return head + f"Tier: user\nSlash commands you can run: {runnable_str}"
 
+    async def _handle_initiative_command(self, event: MessageEvent) -> str:
+        """Handle /initiative — delegate to the shared CLI (file I/O in a thread).
+
+        Allowed while an agent runs: listing/pausing/noting never touches agent
+        state or the live conversation, so the prompt cache stays intact.
+        """
+        from hermes_cli.initiatives import run_slash
+
+        text = (event.text or "").strip().lstrip("/")
+        for prefix in ("initiatives", "initiative"):
+            if text.lower().startswith(prefix):
+                text = text[len(prefix):].lstrip()
+                break
+        try:
+            return await asyncio.to_thread(run_slash, text)
+        except Exception as exc:  # pragma: no cover - defensive
+            return f"(._.) initiative error: {exc}"
+
     async def _handle_kanban_command(self, event: MessageEvent) -> str:
         """Handle /kanban — delegate to the shared kanban CLI (DB work in a thread pool). Allowed
         while an agent runs: the board is profile-agnostic and never touches agent state."""

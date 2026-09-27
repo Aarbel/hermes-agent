@@ -1282,6 +1282,19 @@ goals:
 
 `max_turns` caps how many continuation turns a goal can drive before Hermes auto-pauses it and asks the user to `/goal resume`. It protects against judge false negatives (goal actually done but judge says continue) and unbounded model spend on fuzzy or unachievable goals. See [Goals](./features/goals.md) for the full feature.
 
+## Standing Initiatives
+
+Durable multi-session north stars. Only active headlines (capped) enter the system prompt; bodies stay on disk; webhook events are string-matched before any LLM call. This is **not** `/goal` — see [Initiatives](./features/initiatives.md).
+
+```yaml
+initiatives:
+  enabled: true
+  prompt_index: true   # false = never inject headlines
+  max_index: 5         # cap on headlines in the system prompt; 0 = never inject
+```
+
+Adding these keys does not require a `_config_version` bump — they deep-merge into existing user config.
+
 ### API Timeouts
 
 Hermes has separate timeout layers for streaming, plus a stale detector for non-streaming calls. The stale detectors auto-adjust for local providers only when you leave them at their implicit defaults.

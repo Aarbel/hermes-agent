@@ -70,13 +70,24 @@ results, and schedule kickoff/continuation prompts. Async callers preserve Conte
 when running dispatch off-loop (drafting uses profile-scoped auxiliary credentials).
 Do not add a surface-specific goal parser. ACP has no goal command or goal loop yet.
 
+### Shared initiative commands
+
+`hermes_cli/initiatives.py` owns standing multi-session objectives — a profile north
+star, **not** `/goal`. Store is `$HERMES_HOME/initiatives/<slug>.md` plus optional
+`*.notes.jsonl`. CLI (`hermes initiative`), `/initiative` (CLI + gateway), and the
+webhook `consider` filter all delegate here. Headlines may appear in the volatile
+system-prompt band (after skills, before memory); bodies stay on disk. `consider` is
+string-match only (`[SILENT]` on miss — zero LLM). Wakes are **new** sessions titled
+`initiative:<slug>`; they never mutate a live conversation. Do not add a core tool
+and do not reimplement the Ralph loop here — a wake may call `/goal`.
+
 ## Config system (`hermes_cli/config.py`)
 
 - **config.yaml option:** add to `DEFAULT_CONFIG`. Bump `_config_version` ONLY to actively
   migrate/transform existing config (rename keys, restructure); new keys deep-merge automatically.
   Top-level sections (non-exhaustive): `model, agent, terminal, compression, display, stt, tts,
 memory, security, delegation, smart_model_routing, checkpoints, auxiliary, curator, skills,
-gateway, logging, cron, profiles, plugins, honcho`. `auxiliary` = per-task side-LLM overrides
+gateway, logging, cron, goals, initiatives, profiles, plugins, honcho`. `auxiliary` = per-task side-LLM overrides
   (`agent/AGENTS.md`); `curator` = `enabled, interval_hours, min_idle_hours, stale_after_days,
 archive_after_days, backup.*`.
 - **.env = SECRETS ONLY** (keys, tokens, passwords): add to `OPTIONAL_ENV_VARS` with

@@ -1866,6 +1866,21 @@ class CLICommandsMixin:
         if output:
             print(output)
 
+    def _handle_initiative_command(self, cmd: str):
+        """Handle /initiative — strip the slash prefix and hand the rest to ``initiatives.run_slash``."""
+        from hermes_cli.initiatives import run_slash
+        rest = cmd.strip().lstrip("/")
+        for prefix in ("initiatives", "initiative"):
+            if rest.lower().startswith(prefix):
+                rest = rest[len(prefix):].lstrip()
+                break
+        try:
+            output = run_slash(rest)
+        except Exception as exc:  # pragma: no cover - defensive
+            output = f"(._.) initiative error: {exc}"
+        if output:
+            print(output)
+
     def _handle_skills_command(self, cmd: str):
         """Handle /skills slash command — delegates to hermes_cli.skills_hub, after intercepting the
         write-approval review subcommands (pending/approve/reject/diff/mode)."""

@@ -777,7 +777,17 @@ def build_system_prompt_parts(agent: Any, system_message: Optional[str] = None) 
     # ── Volatile tier (most likely to differ on a rebuild; kept last so the stable prefix stays reusable) ──
     # Skills are runtime-mutable, so the index leads the volatile band: on a longest-prefix
     # backend an unchanged index stays inside the reused prefix; a changed one re-prefills from here.
-    volatile_parts: List[str] = [skills_prompt, *_memory_parts(agent)]
+    volatile_parts: List[str] = [skills_prompt]
+    # Standing initiatives — headlines only, omitted when none are active (zero tokens).
+    # After skills so a changed index does not invalidate the skills prefix.
+    try:
+        from hermes_cli.initiatives import build_prompt_index as _build_initiative_index
+        _init_index = _build_initiative_index()
+        if _init_index:
+            volatile_parts.append(_init_index)
+    except Exception:
+        pass
+    volatile_parts.extend(_memory_parts(agent))
     # Plugin sections are confined to one coarse anchor in the volatile tail so
     # a resumed process can reconstruct the stable prefix without re-running plugins.
     volatile_parts.extend(_plugin_section_blocks(_frozen_plugin_prompt_sections(agent), "after_memory"))

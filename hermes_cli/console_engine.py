@@ -318,6 +318,10 @@ _CLI_FAMILIES: dict[str, tuple[_CliSurface, str]] = {
         "*boards rename, *boards set-workdir, *create, list, show, *assign, *reclaim, *reassign, "
         "diagnose, *link, *unlink, *claim, *comment, *complete, *edit, *block, *schedule, "
         "*unblock, *promote, *archive, stats, runs, heartbeat, assignments, context"),
+    "initiative": (
+        _CliSurface("builder", "hermes_cli.initiatives", "build_parser", "cmd_initiative"),
+        "list, *add, show, *pause, *resume, *done, *archive, *watch, *note, consider, "
+        "prompt-index, *install-script"),
     "bundles": (_reg("bundles", "bundles_command"), "list, show, *create, *delete, *reload"),
     "checkpoints": (_reg("checkpoints"), "status, list, *prune, *clear, *clear-legacy"),
     "curator": (
