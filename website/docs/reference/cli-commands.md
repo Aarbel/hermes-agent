@@ -58,6 +58,7 @@ hermes [global-options] <command> [subcommand/options]
 | `hermes migrate` | Diagnose and (optionally) rewrite `config.yaml` to replace references to retired models or deprecated settings (e.g. `migrate xai`). |
 | `hermes status` | Show agent, auth, and platform status. |
 | `hermes cron` | Inspect and tick the cron scheduler. |
+| `hermes initiative` | Standing multi-session objectives (list, add, show, pause, consider). See [Initiatives](../user-guide/features/initiatives.md). |
 | `hermes kanban` | Multi-profile collaboration board (tasks, links, dispatcher). |
 | `hermes project` | Manage named, multi-folder workspaces (projects). Anchors desktop session grouping and, when bound to a kanban board, gives tasks a deterministic worktree + branch convention. State is per-profile. |
 | `hermes webhook` | Manage dynamic webhook subscriptions for event-driven activation. |
@@ -628,6 +629,28 @@ NAS-managed provider for scale-to-zero hosted gateways) — configured via the
 `$HERMES_HOME/plugins/<name>/`. An unknown or unavailable provider falls back to
 the built-in, so cron is never left without a trigger. See the
 [cron internals](../developer-guide/cron-internals.md#gateway-integration) doc.
+
+## `hermes initiative`
+
+```bash
+hermes initiative <list|add|show|pause|resume|done|archive|watch|note|consider|prompt-index|install-script>
+```
+
+Alias: `hermes initiatives`. In-session: `/initiative` (same verbs).
+
+| Subcommand | Description |
+|------------|-------------|
+| `list` / `ls` | Show active initiatives (`--all` includes paused/done/archived). |
+| `add NAME` | Create one. `--headline` is required; `--watch TOKEN` is repeatable; `--body` / `--file` set the markdown body. |
+| `show NAME` | Print frontmatter, body, and recent notes. |
+| `pause` / `resume` / `done` / `archive` | Change status. Only `active` is indexed in the system prompt. |
+| `watch NAME TOKEN` | Add auto-wake tokens (`--remove`, `--clear`). Empty watch → never auto-wakes. |
+| `note NAME TEXT` | Append a sidecar log line (not in the prompt). |
+| `consider` | stdin / `--event-json` → wake JSON or `[SILENT]`. String match, no LLM. |
+| `prompt-index` | Print the headlines that would be injected (or empty). |
+| `install-script` | Write `initiative-consider.py` for a webhook route. |
+
+This is **not** [`/goal`](../user-guide/features/goals.md). `/goal` is a same-session Ralph loop. An initiative is a profile north star; a matching event starts a **new** session. See [Initiatives](../user-guide/features/initiatives.md).
 
 ## `hermes kanban`
 

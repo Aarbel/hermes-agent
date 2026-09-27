@@ -175,7 +175,10 @@ def test_consider_main_empty_stdin_is_silent(init_home, capsys, monkeypatch):
 def test_consider_main_json_payload(init_home, tmp_path, capsys):
     _add(init_home, "prs", "Review PRs", watch=["pull_request"])
     event_path = tmp_path / "event.json"
-    event_path.write_text(json.dumps({"event": "pull_request", "action": "opened"}))
+    event_path.write_text(
+        json.dumps({"event": "pull_request", "action": "opened"}),
+        encoding="utf-8",
+    )
     rc = ini.consider_main(["--event-json", str(event_path)])
     assert rc == 0
     out = capsys.readouterr().out.strip()
@@ -193,7 +196,7 @@ def test_notes_are_sidecar_not_in_index(init_home):
     assert notes[-1]["text"] == "Cut the RC tag yesterday."
     index = ini.build_prompt_index(home=init_home)
     assert "RC tag" not in index
-    md = (init_home / "initiatives" / "ship-v2.md").read_text()
+    md = (init_home / "initiatives" / "ship-v2.md").read_text(encoding="utf-8")
     assert "RC tag" not in md
 
 
@@ -235,7 +238,7 @@ def test_install_script_writes_under_hermes_home(init_home):
     assert rc == 0
     path = init_home / "scripts" / "initiative-consider.py"
     assert path.is_file()
-    content = path.read_text()
+    content = path.read_text(encoding="utf-8")
     assert "consider_main" in content
     assert str(Path.home() / ".hermes" / "scripts") not in content
 
