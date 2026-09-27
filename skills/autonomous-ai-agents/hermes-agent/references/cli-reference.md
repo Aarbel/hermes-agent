@@ -93,8 +93,10 @@ hermes sessions list|browse|rename ID TITLE|delete ID|export OUT|prune|stats
 hermes cron list|create SCHED|edit ID|pause|resume|run ID|remove|status
     Schedules: '30m', 'every 2h', '0 9 * * *', ISO timestamp
 hermes webhook subscribe NAME|list|remove NAME|test NAME
+hermes initiative list|add|show|pause|resume|done|consider|install-script
 ```
 Webhook payloads/routes: `references/webhooks.md`.
+Initiatives (standing objectives, event-wake, zero-token misses): `references/initiatives.md`.
 
 ### Profiles
 

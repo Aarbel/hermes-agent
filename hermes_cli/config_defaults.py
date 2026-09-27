@@ -2237,6 +2237,19 @@ DEFAULT_CONFIG = {
         "max_turns": 20,
     },
 
+    # Standing initiatives — durable multi-session objectives. Headlines
+    # (only) may appear in the system prompt; bodies stay on disk; webhook
+    # / cron events are matched with string watchers before any LLM call.
+    # See website/docs/user-guide/features/initiatives.md.
+    "initiatives": {
+        "enabled": True,
+        # When false, skip the prompt-index block even if initiatives exist.
+        "prompt_index": True,
+        # Cap on headlines injected into the system prompt. The rest stay
+        # on disk (`hermes initiative list`). 0 = never inject.
+        "max_index": 5,
+    },
+
 
     # Loops — /loop recurring in-session wakeups (Claude Code parity).
     # A loop re-runs a prompt (or slash command) on a cadence inside the

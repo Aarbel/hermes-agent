@@ -345,6 +345,18 @@ kanban:
   review_dispatch: true
 
 # =============================================================================
+# Initiatives — standing multi-session objectives
+# =============================================================================
+# Durable north stars above /goal, kanban, and cron. Only active headlines
+# (capped) enter the system prompt; bodies stay on disk; webhook/cron events
+# are string-matched before any LLM call. Empty store → the prompt block is
+# omitted (zero tokens). See user-guide/features/initiatives.md.
+initiatives:
+  enabled: true
+  prompt_index: true   # false = never inject headlines
+  max_index: 5         # cap on headlines in the system prompt; 0 = never inject
+
+# =============================================================================
 # Terminal Tool Configuration
 # =============================================================================
 # Choose ONE of the following terminal configurations by uncommenting it.

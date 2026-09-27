@@ -102,6 +102,7 @@ const sidebars: SidebarsConfig = {
             'user-guide/features/kanban-tutorial',
             'user-guide/features/kanban-worker-lanes',
             'user-guide/features/goals',
+            'user-guide/features/initiatives',
             'user-guide/features/heartbeat',
             'user-guide/features/loops',
             'user-guide/features/code-execution',
