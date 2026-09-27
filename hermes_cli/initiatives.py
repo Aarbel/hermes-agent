@@ -153,7 +153,9 @@ def _dump_markdown(init: Initiative) -> str:
         sort_keys=False,
         allow_unicode=True,
         default_flow_style=False,
-    )
+    ) or ""
+    if not fm.endswith("\n"):
+        fm += "\n"
     body = (init.body or "").strip()
     return f"---\n{fm}---\n\n{body}\n"
 
