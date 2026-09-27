@@ -129,7 +129,7 @@ def _parse_frontmatter(text: str) -> tuple[dict[str, Any], str]:
     raw = content[3 : end.start() + 3]
     body = content[end.end() + 3 :]
     try:
-        import yaml
+        import hermes_yaml as yaml
 
         parsed = yaml.safe_load(raw) or {}
         if isinstance(parsed, dict):
@@ -146,7 +146,7 @@ def _parse_frontmatter(text: str) -> tuple[dict[str, Any], str]:
 
 
 def _dump_markdown(init: Initiative) -> str:
-    import yaml
+    import hermes_yaml as yaml
 
     fm = yaml.safe_dump(
         init.to_frontmatter(),
